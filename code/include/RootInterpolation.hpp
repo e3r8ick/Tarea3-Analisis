@@ -34,9 +34,53 @@ namespace anpi {
    */
   template<typename T>
   T rootInterpolation(const std::function<T(T)>& funct,T xl,T xu,const T eps) {
+    
+    T fl = funct(xl);
+    T fu = funct(xu);
+    if (xl > xu){
+      throw anpi::Exception("Interval reversed");
+    }
+    if (std::signbit(fl) == std::signbit(fu)){
+      throw anpi::Exception("Signos iguales");
+    }
+    int maxi = std::numeric_limits<T>::digits;
+    T xr = xl;
+    T ea = T();
 
-    // TODO: Put your code in here!
-
+    int iu(0), il(0);
+    maxi*=maxi;
+    for (int i = maxi; i > 0; --i){
+      T xrold (xr);
+      xr = xu- fu * (xl - xu)/ (fl -fu);
+      T fr = funct(xr);
+      
+      //evitar division por cero
+      if (std::abs(xr) > eps){
+        ea = std::abs((xr-xrold)/xr)*T(100); 
+      }
+      T cond = fl * fr;
+      if (cond < T(0)){
+        xu = xr;
+        fu = fr;
+        iu = 0;
+        il++;
+        if (il >= 2){
+          fl /= T(2);
+        }
+      }else if(cond > T(0)){
+        xl = xr;
+        fl = fr;
+        il = 0;
+        iu++;
+        if (iu >= 2){
+          fu /= 2;
+        }
+      }else{
+        ea = T(0);
+        xr = (fl == T(0)) ? xl : xu;
+      }
+      if (ea < eps) return xr;
+    }
     // Return NaN if no root was found
     return std::numeric_limits<T>::quiet_NaN();
   }

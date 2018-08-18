@@ -31,12 +31,33 @@ namespace anpi {
    * @throws anpi::Exception if inteval is reversed or both extremes
    *         have same sign.
    */
+
   template<typename T>
   T rootNewtonRaphson(const std::function<T(T)>& funct,T xi,const T eps) {
-
-    // TODO: Put your code in here!
-
+    T f = funct(xi);
+    T h = T(0.1);
+    T df = (funct(xi+h) - funct(xi-h))/(2*h);
+    T maxi = std::numeric_limits<T>::digits;
+    maxi = pow(maxi,3);
+    T ea(T(0));
+    for (T j = maxi; j > 0; --j){
+      T xiold = xi;
+      if (std::abs(df) < eps){
+        throw anpi::Exception("Division sobre 0");
+      }
+      T divi = f/df;
+      xi = xi - divi;
+      if (std::abs(xi) > eps){
+        ea = std::abs((xi-xiold)/xi)*T(100); 
+      }
+      f = funct(xi);
+      df = (funct(xi+h) - funct(xi-h))/(2*h);
+      if (ea < std::sqrt(eps) && std::abs(f) < eps){ 
+        return xi;
+      }
+    }
     // Return NaN if no root was found
+    std::cout << "Newton Raphson: no root was found for " << eps << std::endl;
     return std::numeric_limits<T>::quiet_NaN();
   }
 
