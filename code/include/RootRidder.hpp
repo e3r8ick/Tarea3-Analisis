@@ -9,6 +9,7 @@
  */
 
 #include <cmath>
+#include <math.h>
 #include <limits>
 #include <functional>
 
@@ -18,6 +19,24 @@
 #define ANPI_ROOT_RIDDER_HPP
 
 namespace anpi {
+
+  /**
+   * @param a 
+   * @param b
+   *
+   * @return a number with the same magnitude as "a" and the same sign as "b".
+   */
+  template<typename T>
+  T Sign(T a, T b){
+    T temp = 0;
+    if(signbit(b)){
+      temp = a*(-1);
+    }
+    else{
+      temp = a;
+    }
+    return temp;
+  }
   
   /**
    * Find a root of the function funct looking for it starting at xi
@@ -48,15 +67,15 @@ namespace anpi {
         ans=xnew;
         T fnew=funct(ans);
         if (fnew == 0.0) return ans;
-        if (SIGN(fm,fnew) != fm) {
+        if (anpi::Sign(fm,fnew) != fm) {
           xl=xm;
           fl=fm;
           xh=ans;
           fh=fnew;
-        } else if (SIGN(fl,fnew) != fl) {
+        } else if (anpi::Sign(fl,fnew) != fl) {
           xh=ans;
           fh=fnew;
-        } else if (SIGN(fh,fnew) != fh) {
+        } else if (anpi::Sign(fh,fnew) != fh) {
           xl=ans;
           fl=fnew;
         } else throw("never get here.");
