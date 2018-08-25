@@ -50,9 +50,9 @@ namespace anpi {
     template<typename T>
     T t3(const T x)  { return x*x-std::atan(x); }
 
-    /// Fourth testing function for roots x² = atan(x)
+    /// Fourth testing function for roots (x-2)^3; + 0.01(x-2)
     template<typename T>
-    T t4(const T x)  { return cube(x-T(2)) + T(0.01); }
+    T t4(const T x) { const T x0=x-T(2); return cube(x0) + T(0.01)*x0; }
 
     
     enum TestIntervalMode {
