@@ -33,7 +33,7 @@ namespace anpi {
       temp = a*(-1);
     }
     else{
-      temp = a;
+      temp = std::abs(a);
     }
     return temp;
   }
@@ -61,12 +61,18 @@ namespace anpi {
         T xm=0.5*(xl+xh);
         T fm=funct(xm);
         T s=std::sqrt(fm*fm-fl*fh);
-        if (s == 0.0) return ans;
+        if (s == 0.0) {
+          return ans;
+        }
         T xnew=xm+(xm-xl)*((fl >= fh ? 1.0 : -1.0)*fm/s); 
-        if (std::abs(xnew-ans) <= eps) return ans;
+        if (std::abs(xnew-ans) <= eps){ 
+          return ans;
+        }
         ans=xnew;
         T fnew=funct(ans);
-        if (fnew == 0.0) return ans;
+        if (fnew == 0.0) {
+          return ans;
+        }
         if (anpi::Sign(fm,fnew) != fm) {
           xl=xm;
           fl=fm;
@@ -78,14 +84,26 @@ namespace anpi {
         } else if (anpi::Sign(fh,fnew) != fh) {
           xl=ans;
           fl=fnew;
-        } else throw("never get here.");
-        if (std::abs(xh-xl) <= eps) return ans;
+        } else {
+          throw("never get here.");
+        }
+        if (std::abs(xh-xl) <= eps) {
+          std::cout << "error8: "<< std::endl;
+          return ans;
+        }
       }
       throw("rootRidder exceed maximum iterations");
     }
     else {
-      if (fl == 0.0) return xi;
-      if (fh == 0.0) return xii;
+      std::cout << "error9: "<< std::endl;
+      if (fl == 0.0) {
+        std::cout << "error10: "<< std::endl;
+        return xi;
+      }
+      if (fh == 0.0) {
+        std::cout << "error11: "<< std::endl;
+        return xii;
+      }
       throw("root must be bracketed in rootRidder.");
     }
     return std::numeric_limits<T>::quiet_NaN();

@@ -10,12 +10,9 @@
 
 #include <cstdlib>
 #include <iostream>
+#include "RootRidder.hpp"
 
 int main() {
-
-  // Put your main code in here
-
-  std::cout << "Nothing done yet!" << std::endl; // REMOVE-ME!
   
   return EXIT_FAILURE;
 }
