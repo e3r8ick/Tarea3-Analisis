@@ -35,10 +35,10 @@ namespace anpi {
   template<typename T>
   T rootNewtonRaphson(const std::function<T(T)>& funct,T xi,const T eps) {
     T f = funct(xi);
-    T h = T(0.1);
+    T h = T(1);
     T df = (funct(xi+h) - funct(xi-h))/(2*h);
     T maxi = std::numeric_limits<T>::digits;
-    maxi = pow(maxi,3);
+    maxi = maxi*maxi*maxi;
     T ea(T(0));
     for (T j = maxi; j > 0; --j){
       T xiold = xi;
