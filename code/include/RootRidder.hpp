@@ -88,20 +88,16 @@ namespace anpi {
           throw("never get here.");
         }
         if (std::abs(xh-xl) <= eps) {
-          std::cout << "error8: "<< std::endl;
           return ans;
         }
       }
       throw("rootRidder exceed maximum iterations");
     }
     else {
-      std::cout << "error9: "<< std::endl;
       if (fl == 0.0) {
-        std::cout << "error10: "<< std::endl;
         return xi;
       }
       if (fh == 0.0) {
-        std::cout << "error11: "<< std::endl;
         return xii;
       }
       throw("root must be bracketed in rootRidder.");
