@@ -1,0 +1,16 @@
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/CMakeFiles/rebuild_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/CMakeFiles/test.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/CMakeFiles/edit_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/src/CMakeFiles/rebuild_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/src/CMakeFiles/edit_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/src/CMakeFiles/test.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/src/CMakeFiles/anpi.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/src/CMakeFiles/tarea03.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/test/CMakeFiles/rebuild_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/test/CMakeFiles/edit_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/test/CMakeFiles/tester.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/test/CMakeFiles/test.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/benchmarks/CMakeFiles/rebuild_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/benchmarks/CMakeFiles/edit_cache.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/benchmarks/CMakeFiles/benchmark.dir
+/home/vmontero/Desktop/U/Anpi/Tarea 3/Tarea3-Analisis/code/build/benchmarks/CMakeFiles/test.dir

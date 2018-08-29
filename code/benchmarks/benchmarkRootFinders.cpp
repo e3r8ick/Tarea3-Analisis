@@ -25,7 +25,7 @@
 #include "RootBrent.hpp"
 #include "RootNewtonRaphson.hpp"
 #include "RootRidder.hpp"
-
+#include <PlotPy.hpp>
 #include "Allocator.hpp"
 
 namespace anpi {
@@ -110,7 +110,12 @@ namespace anpi {
                                          const T)>& solver,
                    const T start,
                    const T end,
-                   const T factor) {
+                   const T factor,
+                   std::vector<T>& numcallsf1,
+                   std::vector<T>& numcallsf2,
+                   std::vector<T>& numcallsf3,
+                   std::vector<T>& numcallsf4,
+                   std::vector<T>& epss) {
 
       if ( (factor >= static_cast<T>(1)) &&
            (factor < static_cast<T>(0)) ) {
@@ -123,27 +128,31 @@ namespace anpi {
       // Try a series of tolerances
       for (T eps=start; eps>end; eps*=factor) {
         std::cout << "eps=" << eps << "; ";
-
+        epss.push_back(eps);
         // Create an std::function instance, which wraps the function
         // t1 with the function counter
         f_type c1(CallCounter<T>(t1<T>));
         solver(c1,T(0),T(2),eps);
         std::cout << c1.template target< CallCounter<T> >()->counter() << "; ";
+        numcallsf1.push_back(c1.template target< CallCounter<T> >()->counter());
 
         // now the same with function t2
         f_type c2(CallCounter<T>(t2<T>));
         solver(c2,T(0),T(2),eps);
         std::cout << c2.template target< CallCounter<T> >()->counter() << "; ";
+        numcallsf2.push_back(c2.template target< CallCounter<T> >()->counter());
 
         // now the same with function t3
         f_type c3(CallCounter<T>(t3<T>));
         solver(c3,T(0),T(0.5),eps);
         std::cout << c3.template target< CallCounter<T> >()->counter() << "; ";
-
+        numcallsf3.push_back(c3.template target< CallCounter<T> >()->counter());
+        
         // now the same with function t4
         f_type c4(CallCounter<T>(t4<T>));
         solver(c4,T(1),T(3),eps);
         std::cout << c4.template target< CallCounter<T> >()->counter() << std::endl;
+        numcallsf4.push_back(c4.template target< CallCounter<T> >()->counter());
       }
     }
 
@@ -160,7 +169,12 @@ namespace anpi {
                                          const T)>& solver,
                    const T start,
                    const T end,
-                   const T factor) {
+                   const T factor,
+                   std::vector<T>& numcallsf1,
+                   std::vector<T>& numcallsf2,
+                   std::vector<T>& numcallsf3,
+                   std::vector<T>& numcallsf4,
+                   std::vector<T>& epss) {
 
       if ( (factor >= static_cast<T>(1)) &&
            (factor < static_cast<T>(0)) ) {
@@ -173,27 +187,31 @@ namespace anpi {
       // Try a series of tolerances
       for (T eps=start; eps>end; eps*=factor) {
         std::cout << "eps=" << eps << "; ";
-
+        epss.push_back(eps);      
         // Create an std::function instance, which wraps the function
         // t1 with the function counter       
         f_type c1(CallCounter<T>(t1<T>));
         solver(c1,T(0),eps);
         std::cout << c1.template target< CallCounter<T> >()->counter() << "; ";
+        numcallsf1.push_back(c1.template target< CallCounter<T> >()->counter());
 
         // now the same with function t2
         f_type c2(CallCounter<T>(t2<T>));
         solver(c2,T(2),eps);
         std::cout << c2.template target< CallCounter<T> >()->counter() << "; ";
-        
+        numcallsf2.push_back(c2.template target< CallCounter<T> >()->counter());
+
         // now the same with function t3
         f_type c3(CallCounter<T>(t3<T>));
         solver(c3,T(0),eps);
         std::cout << c3.template target< CallCounter<T> >()->counter() << "; ";
-        
+        numcallsf3.push_back(c3.template target< CallCounter<T> >()->counter());
+
         // now the same with function t4
         f_type c4(CallCounter<T>(t4<T>));
         solver(c4,T(1),eps);
         std::cout << c4.template target< CallCounter<T> >()->counter() << std::endl;
+        numcallsf4.push_back(c4.template target< CallCounter<T> >()->counter());
       }
     }
 
@@ -204,23 +222,106 @@ namespace anpi {
     template<typename T>
     void allSolvers(const T start,const T end,const T factor) {
 
+
+
+      std::vector<T> numCalls1f1;
+      std::vector<T> numCalls1f2;
+      std::vector<T> numCalls1f3;
+      std::vector<T> numCalls1f4;
+      std::vector<T> epss;
       std::cout << "Bisection" << std::endl;
-      anpi::bm::rootBench<T>(anpi::rootBisection<T>,start,end,factor);
+      
+      anpi::bm::rootBench<T>(anpi::rootBisection<T>,start,end,factor,numCalls1f1,numCalls1f2,numCalls1f3,numCalls1f4,epss);
+      anpi::Plot2d<T> plotter;
+      plotter.initialize(1);
+      plotter.plot(epss,numCalls1f1,"f1","red");
+      plotter.plot(epss,numCalls1f2,"f2","blue");
+      plotter.plot(epss,numCalls1f3,"f3","green");
+      plotter.plot(epss,numCalls1f4,"f4","yellow");
+      plotter.show();
+      numCalls1f1.clear();
+      numCalls1f2.clear();
+      numCalls1f3.clear();
+      numCalls1f4.clear();
+      epss.clear();
+
 
       std::cout << "Interpolation" << std::endl;
-      anpi::bm::rootBench<T>(anpi::rootInterpolation<T>,start,end,factor);
+      anpi::bm::rootBench<T>(anpi::rootInterpolation<T>,start,end,factor,numCalls1f1,numCalls1f2,numCalls1f3,numCalls1f4,epss);
+      anpi::Plot2d<T> plotter2;
+      plotter2.initialize(1);
+      plotter2.plot(epss,numCalls1f1,"f1","red");
+      plotter2.plot(epss,numCalls1f2,"f2","blue");
+      plotter2.plot(epss,numCalls1f3,"f3","green");
+      plotter2.plot(epss,numCalls1f4,"f4","yellow");
+      plotter2.show();
+      numCalls1f1.clear();
+      numCalls1f2.clear();
+      numCalls1f3.clear();
+      numCalls1f4.clear();
+      epss.clear();
+
+
 
       std::cout << "Secant" << std::endl;
-      anpi::bm::rootBench<T>(anpi::rootSecant<T>,start,end,factor);
+      anpi::bm::rootBench<T>(anpi::rootSecant<T>,start,end,factor,numCalls1f1,numCalls1f2,numCalls1f3,numCalls1f4,epss);
+      anpi::Plot2d<T> plotter3;
+      plotter3.initialize(1);
+      plotter3.plot(epss,numCalls1f1,"f1","red");
+      plotter3.plot(epss,numCalls1f2,"f2","blue");
+      plotter3.plot(epss,numCalls1f3,"f3","green");
+      plotter3.plot(epss,numCalls1f4,"f4","yellow");
+      plotter3.show();
+      numCalls1f1.clear();
+      numCalls1f2.clear();
+      numCalls1f3.clear();
+      numCalls1f4.clear();
+      epss.clear();
 
       std::cout << "NewtonRaphson" << std::endl;
-      anpi::bm::rootBench<T>(anpi::rootNewtonRaphson<T>,start,end,factor);
+      anpi::bm::rootBench<T>(anpi::rootNewtonRaphson<T>,start,end,factor,numCalls1f1,numCalls1f2,numCalls1f3,numCalls1f4,epss);
+      anpi::Plot2d<T> plotter4;
+      plotter4.initialize(1);
+      plotter4.plot(epss,numCalls1f1,"f1","red");
+      plotter4.plot(epss,numCalls1f2,"f2","blue");
+      plotter4.plot(epss,numCalls1f3,"f3","green");
+      plotter4.plot(epss,numCalls1f4,"f4","yellow");
+      plotter4.show();
+      numCalls1f1.clear();
+      numCalls1f2.clear();
+      numCalls1f3.clear();
+      numCalls1f4.clear();
+      epss.clear();
 
       std::cout << "Brent" << std::endl;
-      anpi::bm::rootBench<T>(anpi::rootBrent<T>,start,end,factor);
+      anpi::bm::rootBench<T>(anpi::rootBrent<T>,start,end,factor,numCalls1f1,numCalls1f2,numCalls1f3,numCalls1f4,epss);
+      anpi::Plot2d<T> plotter5;
+      plotter5.initialize(1);
+      plotter5.plot(epss,numCalls1f1,"f1","red");
+      plotter5.plot(epss,numCalls1f2,"f2","blue");
+      plotter5.plot(epss,numCalls1f3,"f3","green");
+      plotter5.plot(epss,numCalls1f4,"f4","yellow");
+      plotter5.show();
+      numCalls1f1.clear();
+      numCalls1f2.clear();
+      numCalls1f3.clear();
+      numCalls1f4.clear();
+      epss.clear();
 
       std::cout << "Ridder" << std::endl;
-      anpi::bm::rootBench<T>(anpi::rootRidder<T>,start,end,factor);
+      anpi::bm::rootBench<T>(anpi::rootRidder<T>,start,end,factor,numCalls1f1,numCalls1f2,numCalls1f3,numCalls1f4,epss);
+      anpi::Plot2d<T> plotter6;
+      plotter6.initialize(1);
+      plotter6.plot(epss,numCalls1f1,"f1","red");
+      plotter6.plot(epss,numCalls1f2,"f2","blue");
+      plotter6.plot(epss,numCalls1f3,"f3","green");
+      plotter6.plot(epss,numCalls1f4,"f4","yellow");
+      plotter6.show();
+      numCalls1f1.clear();
+      numCalls1f2.clear();
+      numCalls1f3.clear();
+      numCalls1f4.clear();
+      epss.clear();
     }
   } // bm
 }  // anpi
